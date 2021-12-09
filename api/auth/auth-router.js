@@ -3,8 +3,8 @@ const bcrypt = require('bcryptjs')
 const router = require('express').Router()
 const User = require('../users/users-model.js')
 
-const jwt = require("jsonwebtoken")
-const secrets = require('../../config/secrets')
+const jwt = require("jsonwebtoken") // add jsonewebtoken
+const secrets = require('../../config/secrets') // create secrets module
 
 const { BCRYPT_ROUNDS } = require('../../config')
 
@@ -30,7 +30,6 @@ router.post('/login', (req, res, next) => {
     .then(([user]) => {
       if (user && bcrypt.compareSync(password, user.password)) {
         // generate a token and include it in the response
-
         const token = generateToken(user)
 
         res.status(200).json({ message: `Welcome back ${user.username}...` , token})
@@ -41,7 +40,7 @@ router.post('/login', (req, res, next) => {
     .catch(next)
 })
 
-function generateToken (user) {
+function generateToken (user) { // create token
   const payload = {
     subject: user.id,
     username: user.username,
@@ -53,7 +52,7 @@ function generateToken (user) {
   }
   const secret = secrets.jwtSecret
 
-  return jwt.sign(payload,secret,options)
+  return jwt.sign(payload,secret,options) 
 
 }
 

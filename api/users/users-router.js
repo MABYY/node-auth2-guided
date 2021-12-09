@@ -2,9 +2,11 @@ const router = require("express").Router()
 
 const User = require("./users-model.js")
 
-const { restricted } = require('../auth/auth-middleware')
+const { restricted ,checkRole} = require('../auth/auth-middleware')
 
-router.get("/", restricted, (req, res, next) => {
+const role = 1 // choose whoch role you want to check
+
+router.get("/", restricted, checkRole(role), (req, res, next) => {
   User.find()
     .then(users => {
       res.json(users)
